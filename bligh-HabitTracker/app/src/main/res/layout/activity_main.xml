@@ -8,24 +8,71 @@
     <EditText android:id="@+id/body"
         android:layout_width ="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/edit_message" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sunday"
-        android:id="@+id/sunday" />
+        android:scrollbars="horizontal"
+        android:hint="@string/edit_message"
+        android:onClick="saveHabit"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/monday"
-        android:id="@+id/monday" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="26dp">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sunday"
+            android:id="@+id/sunday" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monday"
+            android:id="@+id/monday" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tuesday"
+            android:id="@+id/tuesday" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wednesday"
+            android:id="@+id/wednesday"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="26dp">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thursday"
+            android:id="@+id/thursday" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friday"
+            android:id="@+id/friday" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saturday"
+            android:id="@+id/saturday" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/saveHabit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_save"
-        android:onClick="saveHabit"/>
+        android:text="@string/button_save"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -47,5 +94,11 @@
             android:id="@+id/delete_button"
             android:layout_gravity="right" />
     </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/oldHabitList"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

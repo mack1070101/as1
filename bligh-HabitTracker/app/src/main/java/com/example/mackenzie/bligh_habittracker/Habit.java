@@ -16,6 +16,11 @@ public abstract class Habit implements Habitable {
         this.name = name;
         this.dateEntered = new Date();
     }
+
+    public Habit(String name, Date dateEntered){
+        this.name = name;
+        this.dateEntered = dateEntered;
+    }
     public String getName() {
         return name;
     }
@@ -24,7 +29,6 @@ public abstract class Habit implements Habitable {
         //Do I need to impliment error check for length?
         this.name = name;
         }
-
 
     public Date getDateEntered() {
             return dateEntered;

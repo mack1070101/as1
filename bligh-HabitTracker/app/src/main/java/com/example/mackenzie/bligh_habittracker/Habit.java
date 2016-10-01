@@ -9,13 +9,28 @@ import java.util.Date;
 public abstract class Habit implements Habitable {
     public String name;
     public Date dateEntered;
-    //public ArrayList<String> days; //String containing days of the week the habit exits
+    public ArrayList days; //String containing days of the week the habit exits
 
-    public Habit(String name) {
+    public Habit(String name, ArrayList days) {
         //must impliment days it should occur. Maybe date type
         this.name = name;
         this.dateEntered = new Date();
+        this.days = days;
     }
+
+
+    public void setDay(String day){
+        days.add(day);
+    }
+    public ArrayList getDays() {
+        return days;
+    }
+
+    public void setDays(ArrayList days) {
+        this.days = days;
+    }
+
+
 
     public String getName() {
         return name;
@@ -36,7 +51,7 @@ public abstract class Habit implements Habitable {
 
     @Override
     public String toString(){
-        return name;
+        return this.name + " on " + this.days.toString();
     }
 }
 

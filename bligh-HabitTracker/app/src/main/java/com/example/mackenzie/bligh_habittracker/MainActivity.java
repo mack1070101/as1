@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -45,23 +46,54 @@ public class MainActivity extends AppCompatActivity {
         Button saveButton = (Button) findViewById(R.id.save);
         Button deleteHabitsButton = (Button) findViewById(R.id.delete_button);
         oldhabitsList = (ListView) findViewById(R.id.oldHabitsList);
+        final CheckBox monday = (CheckBox) findViewById(R.id.monday);
+        final CheckBox tuesday = (CheckBox) findViewById(R.id.tuesday);
+        final CheckBox wednesday = (CheckBox) findViewById(R.id.wednesday);
+        final CheckBox thursday = (CheckBox) findViewById(R.id.thursday);
+        final CheckBox friday = (CheckBox) findViewById(R.id.friday);
+        final CheckBox saturday = (CheckBox) findViewById(R.id.saturday);
+        final CheckBox sunday = (CheckBox) findViewById(R.id.sunday);
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 String text = bodyText.getText().toString();
+                ArrayList<String> selectedDays = new ArrayList<String>();
 
-                Habit newHabit = new NormalHabit(text);
+                //http://stackoverflow.com/questions/18336151/how-to-check-if-android-checkbox-is-checked-within-its-onclick-method-declared
+                if (monday.isChecked()){
+                    selectedDays.add("Mon");
+                }
+                if (tuesday.isChecked()){
+                    selectedDays.add("Tues");
+                }
+                if (wednesday.isChecked()){
+                    selectedDays.add("Wed");
+                }
+                if (thursday.isChecked()){
+                    selectedDays.add("Thurs");
+                }
+                if (friday.isChecked()){
+                    selectedDays.add("Fri");
+                }
+                if (saturday.isChecked()){
+                    selectedDays.add("Sat");
+                }
+                if (sunday.isChecked()){
+                    selectedDays.add("Sun");
+                }
+
+                Habit newHabit = new NormalHabit(text, selectedDays);
 
                 habitsList.add(newHabit);
                 adapter.notifyDataSetChanged();
 
                 saveInFile();
-//				finish();
-
             }
         });
+
        deleteHabitsButton.setOnClickListener(new View.OnClickListener() {
 
            public void onClick(View v) {

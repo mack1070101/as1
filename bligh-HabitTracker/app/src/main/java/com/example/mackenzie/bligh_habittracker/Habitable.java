@@ -9,5 +9,4 @@ import java.util.Date;
 public interface Habitable {
     public String getName();
     public Date getDateEntered();
-    //public ArrayList<String> days; //String containing days of the week the habit exit
 }

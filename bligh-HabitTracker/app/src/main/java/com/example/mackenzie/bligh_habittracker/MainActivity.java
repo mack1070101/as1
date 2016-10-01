@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         bodyText = (EditText) findViewById(R.id.body);
         Button saveButton = (Button) findViewById(R.id.save);
+        Button deleteHabitsButton = (Button) findViewById(R.id.delete_button);
         oldhabitsList = (ListView) findViewById(R.id.oldHabitsList);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -54,61 +57,75 @@ public class MainActivity extends AppCompatActivity {
                 habitsList.add(newHabit);
                 adapter.notifyDataSetChanged();
 
-                saveInFile(text, new Date(System.currentTimeMillis()));
+                saveInFile();
 //				finish();
 
             }
         });
+       deleteHabitsButton.setOnClickListener(new View.OnClickListener() {
+
+           public void onClick(View v) {
+               setResult(RESULT_OK);
+               String text = bodyText.getText().toString();
+
+               habitsList.clear();
+
+               adapter.notifyDataSetChanged();
+
+              saveInFile();
+           }
+        });
+
     }
 
     @Override
     protected void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
+        loadFromFile();
+
         adapter = new ArrayAdapter<Habit>(this,R.layout.list_item, habitsList);
         oldhabitsList.setAdapter(adapter);
     }
 
-    private String[] loadFromFile() {
-        ArrayList<String> habits = new ArrayList<String>();
+    private void loadFromFile() {
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-            String line = in.readLine();
-            while (line != null) {
-                habits.add(line);
-                line = in.readLine();
-            }
+
+            Gson gson = new Gson();
+
+            // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+            Type listType = new TypeToken<ArrayList<NormalHabit>>(){}.getType();
+
+            habitsList = gson.fromJson(in,listType);
 
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            habitsList = new ArrayList<Habit>();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException();
         }
-        return habits.toArray(new String[habits.size()]);
     }
 
-    private void saveInFile(String text, Date date) {
+    private void saveInFile() {
         try {
             FileOutputStream fos = openFileOutput(FILENAME,
                     0);
-            fos.write(new String(text)
-                    .getBytes());
-            BufferedWriter out = new BufferedWriter( new OutputStreamWriter(fos));
 
-            fos.close();
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+
             Gson gson = new Gson();
             gson.toJson(habitsList, out);
             out.flush();
-
+            fos.close();
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 }

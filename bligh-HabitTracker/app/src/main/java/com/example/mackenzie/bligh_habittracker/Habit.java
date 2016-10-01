@@ -36,7 +36,7 @@ public abstract class Habit implements Habitable {
 
     @Override
     public String toString(){
-        return name + " Started on " + dateEntered.toString();
+        return name;
     }
 }
 

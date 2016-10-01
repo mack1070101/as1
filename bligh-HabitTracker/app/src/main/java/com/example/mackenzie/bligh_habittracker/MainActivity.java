@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<Habit> adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
         Button saveHabit = (Button) findViewById(R.id.saveHabit);
         final Button habitStats = (Button) findViewById(R.id.view_button);
         Button habitRemoval = (Button) findViewById(R.id.delete_button);
-        CheckBox sundayBox = (CheckBox) findViewById(R.id.sunday);
+        /*CheckBox sundayBox = (CheckBox) findViewById(R.id.sunday);
         CheckBox mondayBox = (CheckBox) findViewById(R.id.monday);
         CheckBox tuesdayBox = (CheckBox) findViewById(R.id.tuesday);
         CheckBox wednesdayBox = (CheckBox) findViewById(R.id.wednesday);
         CheckBox thursdayBox = (CheckBox) findViewById(R.id.thursday);
         CheckBox fridayBox = (CheckBox) findViewById(R.id.friday);
-        CheckBox saturdayBox = (CheckBox) findViewById(R.id.saturday);
+        CheckBox saturdayBox = (CheckBox) findViewById(R.id.saturday);*/
         oldHabitList = (ListView) findViewById(R.id.oldHabitList);
 
         saveHabit.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
                 String text = bodyText.getText().toString();
 
                 Habit newHabit = new NormalHabit(text);
+
                 System.out.print(text);
 
                 habitList.add(newHabit);
-                
+
                 adapter.notifyDataSetChanged();
 
                 saveInFile();

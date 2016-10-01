@@ -9,7 +9,7 @@ import java.util.Date;
 public abstract class Habit implements Habitable {
     public String name;
     public Date dateEntered;
-    public ArrayList<String> days; //String containing days of the week the habit exits
+    //public ArrayList<String> days; //String containing days of the week the habit exits
 
     public Habit(String name) {
         //must impliment days it should occur. Maybe date type
@@ -17,10 +17,6 @@ public abstract class Habit implements Habitable {
         this.dateEntered = new Date();
     }
 
-    public Habit(String name, Date dateEntered){
-        this.name = name;
-        this.dateEntered = dateEntered;
-    }
     public String getName() {
         return name;
     }
@@ -28,14 +24,19 @@ public abstract class Habit implements Habitable {
     public void setName(String name) {
         //Do I need to impliment error check for length?
         this.name = name;
-        }
+    }
 
     public Date getDateEntered() {
-            return dateEntered;
-        }
+        return dateEntered;
+    }
 
     public void setDateEntered(Date dateEntered) {
-            this.dateEntered = dateEntered;
-        }
+        this.dateEntered = dateEntered;
     }
+
+    @Override
+    public String toString(){
+        return name + " Started on " + dateEntered.toString();
+    }
+}
 

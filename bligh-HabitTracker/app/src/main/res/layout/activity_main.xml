@@ -9,8 +9,7 @@
         android:layout_width ="fill_parent"
         android:layout_height="wrap_content"
         android:scrollbars="horizontal"
-        android:hint="@string/edit_message"
-        android:onClick="saveHabit"/>
+        android:hint="@string/edit_message"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -69,7 +68,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/saveHabit"
+        android:id="@+id/save"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_save"/>
@@ -98,7 +97,8 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/oldHabitList"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/oldHabitsList"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"/>
 
 </LinearLayout>

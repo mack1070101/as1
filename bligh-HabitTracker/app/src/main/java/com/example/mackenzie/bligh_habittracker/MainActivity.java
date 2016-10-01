@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText bodyText;
     private ListView oldhabitsList;
 
-    private ArrayList<Habit> habitsList = new ArrayList<Habit>();
+    public ArrayList<Habit> habitsList = new ArrayList<Habit>();
 
     private ArrayAdapter<Habit> adapter;
 

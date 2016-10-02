@@ -84,6 +84,7 @@
             android:layout_height="wrap_content"
             android:text="@string/view_button"
             android:id="@+id/view_button"
+            android:onClick="editCompletions"
             android:layout_gravity="left|bottom" />
 
         <Button

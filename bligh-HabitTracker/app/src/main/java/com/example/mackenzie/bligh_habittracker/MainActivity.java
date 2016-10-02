@@ -14,6 +14,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         final CheckBox friday = (CheckBox) findViewById(R.id.friday);
         final CheckBox saturday = (CheckBox) findViewById(R.id.saturday);
         final CheckBox sunday = (CheckBox) findViewById(R.id.sunday);
+        final Button viewCompletionsButton = (Button) findViewById(R.id.view_button);
 
 
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 String text = bodyText.getText().toString();
                 ArrayList<String> selectedDays = new ArrayList<String>();
 
+                if(text.equals("") || text.equals(" ") || text.equals("\n")){
+                    return;
+                }
                 //http://stackoverflow.com/questions/18336151/how-to-check-if-android-checkbox-is-checked-within-its-onclick-method-declared
                 if (monday.isChecked()){
                     selectedDays.add("Mon");
@@ -107,7 +112,11 @@ public class MainActivity extends AppCompatActivity {
               saveInFile();
            }
         });
-
+        viewCompletionsButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                editCompletions();
+            }
+        });
     }
 
     @Override
@@ -159,5 +168,10 @@ public class MainActivity extends AppCompatActivity {
             // TODO Auto-generated catch block
             throw new RuntimeException();
         }
+    }
+
+    public void editCompletions(){
+        Intent intent = new Intent(MainActivity.this, viewHabitCompletionsActivity.class);
+        startActivity(intent);
     }
 }

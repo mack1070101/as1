@@ -17,7 +17,6 @@ public abstract class Habit implements Habitable {
         this.name = name;
         this.dateEntered = new Date();
         this.days = days;
-        this.completions = completions;
     }
     public void addCompletion(Date dayCompleted){
         completions.add(dayCompleted);

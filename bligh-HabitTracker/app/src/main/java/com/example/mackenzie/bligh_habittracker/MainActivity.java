@@ -18,13 +18,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.ObjectConstructor;
 import com.google.gson.reflect.TypeToken;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 setResult(RESULT_OK);
                 String text = bodyText.getText().toString();
                 ArrayList<String> selectedDays = new ArrayList<String>();
+                ArrayList<String> completions = new ArrayList<String>();
 
                 if(text.equals("") || text.equals(" ") || text.equals("\n")){
                     return;
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedDays.add("Sun");
                 }
 
-                Habit newHabit = new NormalHabit(text, selectedDays);
+                Habit newHabit = new NormalHabit(text, selectedDays, completions);
 
                 habitsList.add(newHabit);
                 adapter.notifyDataSetChanged();
@@ -112,13 +116,26 @@ public class MainActivity extends AppCompatActivity {
               saveInFile();
            }
         });
+
         viewCompletionsButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 editCompletions();
             }
         });
-    }
 
+        //http://stackoverflow.com/questions/2468100/android-listview-click-howto
+       oldhabitsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                Habit habit = habitsList.get(position);
+                habit.addCompletion();
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+    public void listClick(){
+        Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+    }
     @Override
     protected void onStart() {
         // TODO Auto-generated method stub

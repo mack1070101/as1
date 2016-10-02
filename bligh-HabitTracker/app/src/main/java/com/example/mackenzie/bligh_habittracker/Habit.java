@@ -12,21 +12,20 @@ public abstract class Habit implements Habitable {
     public ArrayList days; //String containing days of the week the habit exits
     public ArrayList completions;
 
-    public Habit(String name, ArrayList days) {
+    public Habit(String name, ArrayList days, ArrayList completions) {
         //must impliment days it should occur. Maybe date type
         this.name = name;
         this.dateEntered = new Date();
         this.days = days;
+        this.completions = completions;
     }
-    public void addCompletion(Date dayCompleted){
-        completions.add(dayCompleted);
+    public void addCompletion(){
+        completions.add(new Date().toString());
+
     }
 
     public void removeCompletion(Date dayCompleted){
         completions.remove(dayCompleted);
-    }
-    public void setDay(String day){
-        days.add(day);
     }
 
     public ArrayList getDays() {
@@ -58,7 +57,8 @@ public abstract class Habit implements Habitable {
 
     @Override
     public String toString(){
-        return this.name + " on " + this.days.toString();
+
+        return this.name + " on " + this.days.toString() + completions.toString();
     }
 }
 

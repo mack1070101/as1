@@ -24,44 +24,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class viewHabitCompletionsActivity extends AppCompatActivity {
+    //Declare variables for use in viewHabitCompletionsActivity
     private static final String FILENAME = "file.sav";
-
-    public ArrayList<Habit> habitsList = new ArrayList<Habit>();
-    public ArrayAdapter<Habit> adapter;
-    public ArrayAdapter<String> stringArrayAdapter;
+    public ArrayList<Habit> habitsList = new ArrayList<Habit>(); //Stores list of existing habits
+    public ArrayAdapter<Habit> adapter; //Adapter for habitsList
     private ListView oldHabitsCompletionsList;
     public List<String> completionDates = new ArrayList<String>();
+    public ArrayAdapter<String> stringArrayAdapter;//adapter for completionDates
 
-    /** Called when the activity is first created. */
+    /* Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_habit_completions);
 
         oldHabitsCompletionsList = (ListView) findViewById(R.id.oldHabitsCompletionsList);
-        //http://stackoverflow.com/questions/2468100/android-listview-click-howto
-
+        //Called when a list item is clicked
         oldHabitsCompletionsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                //remove completion date from habit where habit name == compl
+                //When list item is clicked, aquire information to to complete habit
                 String habitName = completionDates.get(position);
                 int newlineIndex = habitName.indexOf("\n");
-                int tabindex = habitName.indexOf("\t");
-                String habitNameOnly = habitName.substring(0,newlineIndex);
-                String dateRepresentation = habitName.substring(tabindex + 2);
+                int tabIndex = habitName.indexOf("\t");
+                String habitNameOnly = habitName.substring(0,newlineIndex); //Name of habit as a string
+                String dateRepresentation = habitName.substring(tabIndex + 2); //Date habit was completed as a string
 
                 for(Habit habit: habitsList){
+                    /*For every habit in the habit list, find where the name of the habit matches it's completion
+                      then remove the date of completion that the user touched*/
                     if(habit.getName().equals(habitNameOnly)){
                         habit.completions.remove(dateRepresentation);
                         completionDates.remove(position);
                         stringArrayAdapter.notifyDataSetChanged();
                         saveInFile();
-                        // /adapter.notifyDataSetChanged();
                     }
                 }
-
-
+                //Perform end of function operations; save changes and update the visible info
                 saveInFile();
                 stringArrayAdapter.notifyDataSetChanged();
             }
@@ -73,18 +72,21 @@ public class viewHabitCompletionsActivity extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onStart();
         loadFromFile();
+        /*When the activity starts, generate a list of completion dates and their corresponding
+         habits*/
         for(Habit habitIterator: habitsList){
             for(Object o: habitIterator.getCompletions()){
                 completionDates.add(habitIterator.getName() + "\non\t " + o);
             }
         }
-
+        //Display list of completions
         stringArrayAdapter = new ArrayAdapter<String>(this,R.layout.list_item, completionDates);
         oldHabitsCompletionsList.setAdapter(stringArrayAdapter);
 
     }
 
     private void loadFromFile() {
+        // On start load habits from file if they exist, and setup adapter
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -106,6 +108,7 @@ public class viewHabitCompletionsActivity extends AppCompatActivity {
     }
 
     private void saveInFile() {
+        //Load habits from file
         try {
             FileOutputStream fos = openFileOutput(FILENAME,
                     0);

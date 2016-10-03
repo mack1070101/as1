@@ -31,12 +31,12 @@ import com.google.gson.internal.ObjectConstructor;
 import com.google.gson.reflect.TypeToken;
 
 public class MainActivity extends AppCompatActivity {
-
+    //Declare variables used by main activity
     private static final String FILENAME = "file.sav";
-    private EditText bodyText;
+    private EditText bodyText; // Where input from GUI is stored
     private ListView oldhabitsList;
 
-    public ArrayList<Habit> habitsList = new ArrayList<Habit>();
+    public ArrayList<Habit> habitsList = new ArrayList<Habit>(); //Stores all created habits when not in file
 
     private ArrayAdapter<Habit> adapter;
 
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Declaring references to buttons in the GUI
         bodyText = (EditText) findViewById(R.id.body);
         Button saveButton = (Button) findViewById(R.id.save);
         final Button deleteHabitsButton = (Button) findViewById(R.id.delete_button);
@@ -59,21 +60,20 @@ public class MainActivity extends AppCompatActivity {
         final CheckBox sunday = (CheckBox) findViewById(R.id.sunday);
         final Button viewCompletionsButton = (Button) findViewById(R.id.view_button);
 
-
+        //Called when saveButton is clicked
         saveButton.setOnClickListener(new View.OnClickListener() {
-
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 String text = bodyText.getText().toString();
-                ArrayList<String> selectedDays = new ArrayList<String>();
-                ArrayList<String> completions = new ArrayList<String>();
-                int checked = 0;
-
-                if(text.equals("") || text.equals(" ") || text.equals("\n")){
+                ArrayList<String> selectedDays = new ArrayList<String>(); //holds string containing days of week that habit should occur on
+                ArrayList<String> completions = new ArrayList<String>(); //holds dates the habit is completed on as strings
+                int checked = 0; //Used to ensure that user picks atleast 1 day the habit occurs
+                if(text.equals("") || text.equals(" ") || text.equals("\n") || text.equals("\t")){
+                    //Do not accept bad inputs in the text field
                     return;
                 }
-
                 //http://stackoverflow.com/questions/18336151/how-to-check-if-android-checkbox-is-checked-within-its-onclick-method-declared
+                //Adding what days the habit should be completed on
                 if (monday.isChecked()){
                     selectedDays.add("Mon");
                     checked++;
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 if( checked == 0){
                     return;
                 }
-
+                //Create a new habit, add it to the habitsList and save it to file
                 Habit newHabit = new NormalHabit(text, selectedDays, completions);
                 habitsList.add(newHabit);
                 adapter.notifyDataSetChanged();
@@ -113,21 +113,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Called when deleteHabitsButton is clicked; user wants to delete habits
        deleteHabitsButton.setOnClickListener(new View.OnClickListener() {
-
            public void onClick(View v) {
                setResult(RESULT_OK);
-               /*String text = bodyText.getText().toString();
-
-               habitsList.clear();
-
-               adapter.notifyDataSetChanged();
-
-              saveInFile();*/
                deleteHabits();
            }
         });
 
+        //Called when viewCompleteionsButton is clicked; user wants to view and delete habits
         viewCompletionsButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 editCompletions();
@@ -135,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //http://stackoverflow.com/questions/2468100/android-listview-click-howto
+        //When an item in the GUI list is clicked, add a completion for today
         oldhabitsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
@@ -145,12 +140,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public void listClick(){
-        Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
-    }
+
     @Override
     protected void onStart() {
         // TODO Auto-generated method stub
+        // On start load habits from file if they exist, and setup adapter
         super.onStart();
         loadFromFile();
 
@@ -159,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFromFile() {
+        //Load habits from file
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -180,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveInFile() {
+        //Save habits in file
         try {
             FileOutputStream fos = openFileOutput(FILENAME,
                     0);
@@ -200,11 +196,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void editCompletions(){
+        //called by viewCompletionsButton, switches to activity dealing with habit completions
         Intent intent = new Intent(MainActivity.this, viewHabitCompletionsActivity.class);
         startActivity(intent);
     }
 
     public void deleteHabits(){
+        //Called by deleteHabitsButton, switches to activity dealing with habit deletions
         Intent intent = new Intent(MainActivity.this, DeleteHabitsActivity.class);
         startActivity(intent);
     }

@@ -22,13 +22,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class DeleteHabitsActivity extends AppCompatActivity {
-
+    //Declare variables used by DeleteHabitsActivity
     private static final String FILENAME = "file.sav";
-
     public ArrayList<Habit> habitsList = new ArrayList<Habit>();
     public ArrayAdapter<Habit> adapter;
     private ListView oldHabitsList2;
 
+    //Called on creation of activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +39,12 @@ public class DeleteHabitsActivity extends AppCompatActivity {
         oldHabitsList2.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                //If a habit is clicked, delete it
                 Habit habit = habitsList.remove(position);
                 saveInFile();
                 adapter.notifyDataSetChanged();
             }
         });
-
-
     }
 
     @Override
@@ -59,6 +58,7 @@ public class DeleteHabitsActivity extends AppCompatActivity {
     }
 
     private void loadFromFile() {
+        // On start load habits from file if they exist, and setup adapter
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -80,6 +80,7 @@ public class DeleteHabitsActivity extends AppCompatActivity {
     }
 
     private void saveInFile() {
+        //Load habits from file
         try {
             FileOutputStream fos = openFileOutput(FILENAME,
                     0);

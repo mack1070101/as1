@@ -6,7 +6,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Habit Completions"
+        android:text="Delete Habits"
         android:id="@+id/habitCompletionsText"
         android:layout_gravity="center_horizontal" />
 
@@ -14,13 +14,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Touch a habit completion to delete it"
-        android:id="@+id/textView2"
+        android:text="Touch a habit to delete it"
+        android:id="@+id/textView3"
         android:layout_gravity="center_vertical" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/oldHabitsCompletionsList"
+        android:id="@+id/oldHabitsList2"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

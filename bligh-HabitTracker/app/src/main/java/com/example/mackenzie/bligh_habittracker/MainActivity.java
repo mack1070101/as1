@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         bodyText = (EditText) findViewById(R.id.body);
         Button saveButton = (Button) findViewById(R.id.save);
-        Button deleteHabitsButton = (Button) findViewById(R.id.delete_button);
+        final Button deleteHabitsButton = (Button) findViewById(R.id.delete_button);
         oldhabitsList = (ListView) findViewById(R.id.oldHabitsList);
         final CheckBox monday = (CheckBox) findViewById(R.id.monday);
         final CheckBox tuesday = (CheckBox) findViewById(R.id.tuesday);
@@ -107,15 +107,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Habit newHabit = new NormalHabit(text, selectedDays, completions);
-                if(habitsList.contains(newHabit)){
-                    return;
-                }
-                else{
-                    habitsList.add(newHabit);
-                    adapter.notifyDataSetChanged();
-                    saveInFile();
-                }
-
+                habitsList.add(newHabit);
+                adapter.notifyDataSetChanged();
+                saveInFile();
             }
         });
 
@@ -123,13 +117,14 @@ public class MainActivity extends AppCompatActivity {
 
            public void onClick(View v) {
                setResult(RESULT_OK);
-               String text = bodyText.getText().toString();
+               /*String text = bodyText.getText().toString();
 
                habitsList.clear();
 
                adapter.notifyDataSetChanged();
 
-              saveInFile();
+              saveInFile();*/
+               deleteHabits();
            }
         });
 
@@ -206,6 +201,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void editCompletions(){
         Intent intent = new Intent(MainActivity.this, viewHabitCompletionsActivity.class);
+        startActivity(intent);
+    }
+
+    public void deleteHabits(){
+        Intent intent = new Intent(MainActivity.this, DeleteHabitsActivity.class);
         startActivity(intent);
     }
 }

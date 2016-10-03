@@ -24,10 +24,12 @@ public abstract class Habit implements Habitable {
 
     }
 
-    public void removeCompletion(Date dayCompleted){
+    public void removeCompletion(String dayCompleted){
         completions.remove(dayCompleted);
     }
-
+    public int completionsSize(){
+        return completions.size();
+    }
     public ArrayList getDays() {
         return days;
     }
@@ -58,7 +60,15 @@ public abstract class Habit implements Habitable {
     @Override
     public String toString(){
 
-        return this.name + " on " + this.days.toString() + completions.toString();
+        return this.name + " on " + this.days.toString() + " Completions: " + completionsSize();
+    }
+
+    public ArrayList getCompletions() {
+        return completions;
+    }
+
+    public void setCompletions(ArrayList completions) {
+        this.completions = completions;
     }
 }
 

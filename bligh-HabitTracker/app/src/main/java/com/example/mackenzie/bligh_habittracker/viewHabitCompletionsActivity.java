@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,13 +21,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class viewHabitCompletionsActivity extends AppCompatActivity {
     private static final String FILENAME = "file.sav";
 
     public ArrayList<Habit> habitsList = new ArrayList<Habit>();
     public ArrayAdapter<Habit> adapter;
+    public ArrayAdapter<String> stringArrayAdapter;
     private ListView oldHabitsCompletionsList;
+    public List<String> completionDates = new ArrayList<String>();
 
     /** Called when the activity is first created. */
     @Override
@@ -38,7 +39,33 @@ public class viewHabitCompletionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_habit_completions);
 
         oldHabitsCompletionsList = (ListView) findViewById(R.id.oldHabitsCompletionsList);
+        //http://stackoverflow.com/questions/2468100/android-listview-click-howto
 
+        oldHabitsCompletionsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                //remove completion date from habit where habit name == compl
+                String habitName = completionDates.get(position);
+                int newlineIndex = habitName.indexOf("\n");
+                int tabindex = habitName.indexOf("\t");
+                String habitNameOnly = habitName.substring(0,newlineIndex);
+                String dateRepresentation = habitName.substring(tabindex + 2);
+
+                for(Habit habit: habitsList){
+                    if(habit.getName().equals(habitNameOnly)){
+                        habit.completions.remove(dateRepresentation);
+                        completionDates.remove(position);
+                        stringArrayAdapter.notifyDataSetChanged();
+                        saveInFile();
+                        // /adapter.notifyDataSetChanged();
+                    }
+                }
+
+
+                saveInFile();
+                stringArrayAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -46,9 +73,15 @@ public class viewHabitCompletionsActivity extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onStart();
         loadFromFile();
+        for(Habit habitIterator: habitsList){
+            for(Object o: habitIterator.getCompletions()){
+                completionDates.add(habitIterator.getName() + "\non\t " + o);
+            }
+        }
 
-        adapter = new ArrayAdapter<Habit>(this,R.layout.list_item, habitsList);
-        oldHabitsCompletionsList.setAdapter(adapter);
+        stringArrayAdapter = new ArrayAdapter<String>(this,R.layout.list_item, completionDates);
+        oldHabitsCompletionsList.setAdapter(stringArrayAdapter);
+
     }
 
     private void loadFromFile() {

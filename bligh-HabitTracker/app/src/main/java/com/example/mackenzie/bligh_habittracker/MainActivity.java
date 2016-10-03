@@ -67,39 +67,55 @@ public class MainActivity extends AppCompatActivity {
                 String text = bodyText.getText().toString();
                 ArrayList<String> selectedDays = new ArrayList<String>();
                 ArrayList<String> completions = new ArrayList<String>();
+                int checked = 0;
 
                 if(text.equals("") || text.equals(" ") || text.equals("\n")){
                     return;
                 }
+
                 //http://stackoverflow.com/questions/18336151/how-to-check-if-android-checkbox-is-checked-within-its-onclick-method-declared
                 if (monday.isChecked()){
                     selectedDays.add("Mon");
+                    checked++;
                 }
                 if (tuesday.isChecked()){
                     selectedDays.add("Tues");
+                    checked++;
                 }
                 if (wednesday.isChecked()){
                     selectedDays.add("Wed");
+                    checked++;
                 }
                 if (thursday.isChecked()){
                     selectedDays.add("Thurs");
+                    checked++;
                 }
                 if (friday.isChecked()){
                     selectedDays.add("Fri");
+                    checked++;
                 }
                 if (saturday.isChecked()){
                     selectedDays.add("Sat");
+                    checked++;
                 }
                 if (sunday.isChecked()){
                     selectedDays.add("Sun");
+                    checked++;
+                }
+                if( checked == 0){
+                    return;
                 }
 
                 Habit newHabit = new NormalHabit(text, selectedDays, completions);
+                if(habitsList.contains(newHabit)){
+                    return;
+                }
+                else{
+                    habitsList.add(newHabit);
+                    adapter.notifyDataSetChanged();
+                    saveInFile();
+                }
 
-                habitsList.add(newHabit);
-                adapter.notifyDataSetChanged();
-
-                saveInFile();
             }
         });
 
@@ -124,11 +140,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //http://stackoverflow.com/questions/2468100/android-listview-click-howto
-       oldhabitsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        oldhabitsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 Habit habit = habitsList.get(position);
                 habit.addCompletion();
+                saveInFile();
                 adapter.notifyDataSetChanged();
             }
         });
